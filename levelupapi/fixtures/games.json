@@ -1,0 +1,43 @@
+[
+    {
+    "model": "levelupapi.game",
+    "pk": 1,
+    "fields": {
+        "title":"Life",
+        "game_type": 1,
+        "number_of_players": 7,
+        "skill_level": "ages 8 and up",
+        "maker": "Hasbro"
+    }
+},{
+    "model": "levelupapi.game",
+    "pk": 2,
+    "fields": {
+        "title":"Macala",
+        "game_type": 1,
+        "number_of_players": 2,
+        "skill_level": "ages 8 and up",
+        "maker": "Pressman"
+    }
+},{
+    "model": "levelupapi.game",
+    "pk": 3,
+    "fields": {
+        "title":"MineCraft",
+        "game_type": 3,
+        "number_of_players": 10,
+        "skill_level": "ages 8 and up",
+        "maker": "Mojong Studios"
+    }
+},{
+    "model": "levelupapi.game",
+    "pk": 4,
+    "fields": {
+        "title":"Dungeons and Dragons",
+        "game_type": 2,
+        "number_of_players": 7,
+        "skill_level": "ages 8 and up",
+        "maker": "TSR, inc"
+    }
+}
+]

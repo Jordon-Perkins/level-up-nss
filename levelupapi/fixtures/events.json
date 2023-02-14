@@ -1,0 +1,15 @@
+[
+    {
+        "model": "levelupapi.event",
+        "pk": 1,
+        "fields": {
+            "attendees": "grandchildren",
+            "game": 2,
+            "organizer": 1,
+            "description": "family fun",
+            "date": "2020-02-14",
+            "time": "7:30",
+            "joined": true
+        }
+    }
+]
