@@ -25,8 +25,6 @@ class EventView(ViewSet):
         Returns:
             Response -- JSON serialized list of events
         """
-        
-
         if "game" in request.query_params:
             events = Event.objects.filter(game_id = int(request.query_params['game']))
         else:
@@ -34,11 +32,24 @@ class EventView(ViewSet):
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
+class GamerSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Gamer
+        fields = ( 'full_name', )
+
+class GameSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Game
+        fields = ( 'title', )
 
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for events
     """
+    organizer = GamerSerializer()
+    game = GameSerializer()
+
     class Meta:
         model = Event
         fields = ('id', 'attendees', 'description', 'date', 'time', 'joined', 'game', 'organizer')
