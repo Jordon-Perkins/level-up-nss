@@ -6,6 +6,7 @@ class Gamer(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=50)
+    availability = models.CharField(max_length=50)
 
     @property
     def full_name(self):

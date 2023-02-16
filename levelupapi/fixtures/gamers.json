@@ -4,7 +4,8 @@
         "pk": 1,
         "fields": {
             "user": 1,
-            "bio": "Me"
+            "bio": "Me",
+            "availability": "wednesday and friday"
         }
     }
 ]
