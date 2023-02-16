@@ -7,7 +7,8 @@
         "game_type": 1,
         "number_of_players": 7,
         "skill_level": "ages 8 and up",
-        "maker": "Hasbro"
+        "maker": "Hasbro",
+        "gamer": 1
     }
 },{
     "model": "levelupapi.game",
@@ -17,7 +18,8 @@
         "game_type": 1,
         "number_of_players": 2,
         "skill_level": "ages 8 and up",
-        "maker": "Pressman"
+        "maker": "Pressman",
+        "gamer": 1
     }
 },{
     "model": "levelupapi.game",
@@ -27,7 +29,8 @@
         "game_type": 3,
         "number_of_players": 10,
         "skill_level": "ages 8 and up",
-        "maker": "Mojong Studios"
+        "maker": "Mojong Studios",
+        "gamer": 1
     }
 },{
     "model": "levelupapi.game",
@@ -37,7 +40,8 @@
         "game_type": 2,
         "number_of_players": 7,
         "skill_level": "ages 8 and up",
-        "maker": "TSR, inc"
+        "maker": "TSR, inc",
+        "gamer": 1
     }
 }
 ]
