@@ -32,6 +32,34 @@ class EventView(ViewSet):
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
+
+    def create(self, request):
+        """Handle POST operations
+
+        Returns
+            Response -- JSON serialized event instance
+        """
+        try:
+            authenticated_player = Gamer.objects.get(user=request.auth.user)
+
+        except Gamer.DoesNotExist:
+            return Response({'message': 'You sent an invalid token'}, status=status.HTTP_404_NOT_FOUND)
+        
+        try:
+            game = Game.objects.get(pk=request.data['gameId'])
+        except Game.DoesNotExist:
+            return Response({'message': 'You sent an invalid game  ID'}, status=status.HTTP_404_NOT_FOUND)
+
+        event = Event.objects.create(
+            date=request.data["date"],
+            time=request.data["time"],
+            description=request.data["description"],
+            organizer=authenticated_player,
+            game=game
+        )
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+
 class GamerSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -52,4 +80,4 @@ class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ('id', 'description', 'date', 'time', 'game', 'organizer')
+        fields = ('id', 'description', 'date', 'time', 'game', 'organizer', )
