@@ -89,7 +89,7 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        fields = ( 'title', )
+        fields = ( 'title', 'id')
 
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for events
