@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from levelupapi.models import Event, Gamer, Game
+from levelupapi.models import Event, Gamer, Game, GamerEvent
 from rest_framework.decorators import action
 
 class EventView(ViewSet):
@@ -29,6 +29,11 @@ class EventView(ViewSet):
             events = Event.objects.filter(game_id = int(request.query_params['game']))
         else:
             events = Event.objects.all()
+            # Set the `joined` property on every event
+        for event in events:
+            gamer = Gamer.objects.get(user=request.auth.user)
+            # Check to see if the gamer is in the attendees list on the event
+            event.joined = gamer in event.attendees.all()
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
@@ -100,14 +105,14 @@ class EventView(ViewSet):
     
         gamer = Gamer.objects.get(user=request.auth.user)
         event = Event.objects.get(pk=pk)
-        event.attendees.add(gamer)
+        GamerEvent.objects.get(gamer=gamer, event=event).delete()
         return Response({'message': 'Gamer removed'}, status=status.HTTP_204_NO_CONTENT)
 
 class GamerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Gamer
-        fields = ( 'full_name', )
+        fields = ( 'id', 'full_name', )
 
 class GameSerializer(serializers.ModelSerializer):
 
@@ -118,9 +123,10 @@ class GameSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for events
     """
-    organizer = GamerSerializer()
-    game = GameSerializer()
+    organizer = GamerSerializer(many=False)
+    game = GameSerializer(many=False)
 
     class Meta:
         model = Event
-        fields = ('id', 'description', 'date', 'time', 'game', 'organizer', )
+        fields = ('id', 'game', 'organizer', 'description', 'date', 'time', 'attendees',
+        'joined')
