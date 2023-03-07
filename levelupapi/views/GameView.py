@@ -1,5 +1,6 @@
 """View module for handling requests about game"""
 from django.http import HttpResponseServerError
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
@@ -15,9 +16,14 @@ class GameView(ViewSet):
         Returns:
             Response -- JSON serialized game 
         """
-        game = Game.objects.get(pk=pk)
-        serializer = GameSerializer(game)
-        return Response(serializer.data)
+
+        try:
+            game = Game.objects.get(pk=pk)
+            serializer = GameSerializer(game)
+            return Response(serializer.data)
+
+        except ObjectDoesNotExist as ex:
+            return Response({"message": str(ex)}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
         """Handle GET requests to get all game 
@@ -28,6 +34,7 @@ class GameView(ViewSet):
         game = Game.objects.all()
         serializer = GameSerializer(game, many=True)
         return Response(serializer.data)
+    
 
     def create(self, request):
         """Handle POST operations
