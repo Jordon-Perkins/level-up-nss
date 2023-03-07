@@ -52,13 +52,13 @@ class GameTests(APITestCase):
         Ensure we can get an existing game.
         """
 
-        # game_type = GameType()
-        # game_type.game_type = "board game"
-        # game_type.save()
+        game_type = GameType()
+        game_type.game_type = "board game"
+        game_type.save()
 
         # Seed the database with a game
         game = Game()
-        # game.game_type = game_type
+        game.gameTypeId = 1
         game.skill_level = "5 years"
         game.title = "Monopoly"
         game.maker = "Milton Bradley"
@@ -78,5 +78,47 @@ class GameTests(APITestCase):
         # Assert that the values are correct
         self.assertEqual(json_response["title"], "Monopoly")
         self.assertEqual(json_response["maker"], "Milton Bradley")
+        self.assertEqual(json_response["skill_level"], "5 years")
+        self.assertEqual(json_response["number_of_players"], 4)
+
+
+    def test_change_game(self):
+        """
+        Ensure we can change an existing game.
+        """
+
+        game_type = GameType()
+        game_type.game_type = "board game"
+        game_type.save()
+
+        game = Game()
+        game.gameTypeId = 1
+        game.skill_level = 5
+        game.title = "Sorry"
+        game.maker = "Milton Bradley"
+        game.number_of_players = 4
+        game.gamer_id = 1
+        game.save()
+
+        # DEFINE NEW PROPERTIES FOR GAME
+        data = {
+            "game_type": 1,
+            "skill_level": "5 years",
+            "title": "Sorry",
+            "maker": "Hasbro",
+            "number_of_players": 4
+        }
+
+        response = self.client.put(f"/games/{game.id}", data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        # GET game again to verify changes were made
+        response = self.client.get(f"/games/{game.id}")
+        json_response = json.loads(response.content)
+
+        # Assert that the properties are correct
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(json_response["title"], "Sorry")
+        self.assertEqual(json_response["maker"], "Hasbro")
         self.assertEqual(json_response["skill_level"], "5 years")
         self.assertEqual(json_response["number_of_players"], 4)
